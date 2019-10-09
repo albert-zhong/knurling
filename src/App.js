@@ -1,26 +1,49 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import Calendar from 'react-calendar'
+import List from './List.js'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+    constructor(props) {
+      super(props)
+      this.state = {
+        selectedDate: new Date(),
+        workouts: {
+          1570777200000: ['asdf', 'asdfggg', 'lkjalskdjals;kdjs']
+        }
+      }
+      this.handleClickDay = this.handleClickDay.bind(this)
+    }
+
+    handleClickDay(day) {
+        this.setState({
+          selectedDate: day,
+        })
+    }
+
+    handleSubmit(event) {
+      event.preventDefault();
+      console.log(event.value)
+    }
+  
+    render() {
+      return (
+        <div className="app">
+          <Calendar 
+            onClickDay={this.handleClickDay}
+            value={this.state.selectedDate}    
+          />
+          <List selectedDate={this.state.selectedDate} workouts={this.state.workouts[this.state.selectedDate.getTime()]}/>
+
+          <form onSubmit={this.handleSubmit}>
+            <label>
+              <input type="text" ref={el => this.element = el} />
+            </label>
+            <button>Submit</button>
+          </form>
+
+        </div>
+      )
+    }
 }
 
-export default App;
+export default App
