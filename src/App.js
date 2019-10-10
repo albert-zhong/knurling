@@ -5,24 +5,45 @@ import List from './List.js'
 class App extends React.Component {
     constructor(props) {
       super(props)
+
       this.state = {
         selectedDate: new Date(),
-        workouts: {
-          1570777200000: ['asdf', 'asdfggg', 'lkjalskdjals;kdjs']
-        }
       }
+
       this.handleClickDay = this.handleClickDay.bind(this)
+      this.handleSubmit = this.handleSubmit.bind(this)
+      this.getTimeInteger = this.getTimeInteger.bind(this)
     }
 
     handleClickDay(day) {
-        this.setState({
-          selectedDate: day,
-        })
+      const timeInteger = day.getTime()
+      this.setState({
+        selectedDate: day,
+      })
     }
 
     handleSubmit(event) {
+      console.log(this.state)
       event.preventDefault();
-      console.log(event.value)
+
+      const timeInteger = this.getTimeInteger()
+
+      if (timeInteger in this.state) {
+        var newWorkouts = this.state[timeInteger].concat(this.element.value)
+      } else {
+        var newWorkouts = [this.element.value]
+      }
+
+      console.log(timeInteger)
+      console.log(newWorkouts)
+
+      this.setState({
+        [timeInteger]: newWorkouts,
+      })
+    }
+
+    getTimeInteger() {
+      return this.state.selectedDate.getTime()
     }
   
     render() {
@@ -32,7 +53,7 @@ class App extends React.Component {
             onClickDay={this.handleClickDay}
             value={this.state.selectedDate}    
           />
-          <List selectedDate={this.state.selectedDate} workouts={this.state.workouts[this.state.selectedDate.getTime()]}/>
+          <List selectedDate={this.state.selectedDate} workouts={this.state[this.getTimeInteger()]}/>
 
           <form onSubmit={this.handleSubmit}>
             <label>
