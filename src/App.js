@@ -16,26 +16,16 @@ class App extends React.Component {
     }
 
     handleClickDay(day) {
-      const timeInteger = day.getTime()
       this.setState({
         selectedDate: day,
       })
     }
 
     handleSubmit(event) {
-      console.log(this.state)
       event.preventDefault();
 
       const timeInteger = this.getTimeInteger()
-
-      if (timeInteger in this.state) {
-        var newWorkouts = this.state[timeInteger].concat(this.element.value)
-      } else {
-        var newWorkouts = [this.element.value]
-      }
-
-      console.log(timeInteger)
-      console.log(newWorkouts)
+      const newWorkouts = (timeInteger in this.state) ? this.state[timeInteger].concat(this.element.value) : [this.element.value]
 
       this.setState({
         [timeInteger]: newWorkouts,
